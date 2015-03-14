@@ -1,0 +1,21 @@
+{
+    "name": "json-p",
+    "version": "0.1.0",
+    "description": "An element to make JSONP requests.",
+    "license": "MIT",
+    "main": "json-p.html",
+    "keywords": [
+        "polymer",
+        "web-components",
+        "json",
+        "jsonp",
+        "ajax"
+    ],
+    "ignore": [
+        "**/.*",
+        "bower_components"
+    ],
+    "dependencies": {
+        "polymer": "Polymer/polymer#^0.5.1"
+    }
+}

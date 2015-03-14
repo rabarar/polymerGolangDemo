@@ -1,0 +1,23 @@
+{
+  "name": "demo",
+  "version": "0.0.0",
+  "description": "Demo of Go + Polymer + Workflow",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "grunt": "~0.4.5",
+    "polymer": "Polymer/polymer#~0.5.5",
+    "paper-tabs": "polymer/paper-tabs#~0.5.5",
+    "core-header-panel": "polymer/core-header-panel#~0.5.5",
+    "grapp-graph-epoch": "~0.0.7",
+    "json-p": "*",
+    "sortable-table": "~0.11.1",
+    "google-youtube": "~1.0.6"
+  }
+}

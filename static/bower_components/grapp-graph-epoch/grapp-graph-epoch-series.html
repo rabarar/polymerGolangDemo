@@ -1,0 +1,24 @@
+ 
+<!--
+Copyright (c) 2014-2015 Dirk Grappendorf, www.grappendorf.net. All rights reserved.
+This code may only be used under the MIT style license found in the file LICENSE.txt.
+
+Element: grapp-graph-epoch
+Version: 0.0.7
+Description: A web component that displays Epoch graphs
+-->
+
+
+<polymer-element name="grapp-graph-epoch-series" attributes="label data">
+
+<script type="text/javascript">(function() {
+  Polymer('grapp-graph-epoch-series', {
+    created: function() {
+      return this.data = [];
+    }
+  });
+
+}).call(this);
+</script>
+
+</polymer-element>

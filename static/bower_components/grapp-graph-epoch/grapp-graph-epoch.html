@@ -1,0 +1,165 @@
+ 
+<!--
+Copyright (c) 2014-2015 Dirk Grappendorf, www.grappendorf.net. All rights reserved.
+This code may only be used under the MIT style license found in the file LICENSE.txt.
+
+Element: grapp-graph-epoch
+Version: 0.0.7
+Description: A web component that displays Epoch graphs
+-->
+
+
+<link href="../polymer/polymer.html" rel="import">
+<link href="grapp-graph-epoch-series.html" rel="import">
+
+<polymer-element name="grapp-graph-epoch" attributes="type axis theme category width height ticks tickSize tickOffset windowSize historySize queueSize margins domain range">
+
+  <template>
+
+    <link rel="stylesheet" type="text/css" href="../epoch/epoch.min.css">
+
+    <div class="epoch-theme-{{theme}}">
+      <div id="graph" class="epoch {{category}}"></div>
+    </div>
+
+  </template>
+
+  <script src="../d3/d3.min.js"></script>
+  <script src="../epoch/epoch.min.js"></script>
+
+<script type="text/javascript">(function() {
+  var convertStringToArray, convertStringToObject,
+    slice = [].slice;
+
+  convertStringToArray = function(s) {
+    var i, len, n, ref, results;
+    ref = s.split(',');
+    results = [];
+    for (i = 0, len = ref.length; i < len; i++) {
+      n = ref[i];
+      results.push(parseInt(n));
+    }
+    return results;
+  };
+
+  convertStringToObject = function(s) {
+    var i, kv, len, o, part, ref;
+    o = {};
+    ref = (function() {
+      var j, len, ref, results;
+      ref = s.split(',');
+      results = [];
+      for (j = 0, len = ref.length; j < len; j++) {
+        part = ref[j];
+        results.push(part.split(':'));
+      }
+      return results;
+    })();
+    for (i = 0, len = ref.length; i < len; i++) {
+      kv = ref[i];
+      o[kv[0]] = parseInt(kv[1]);
+    }
+    return o;
+  };
+
+  Polymer('grapp-graph-epoch', {
+    created: function() {
+      this.axis = [];
+      this.theme = 'default';
+      return this.category = 'category10';
+    },
+    domReady: function() {
+      var s;
+      this.data = (function() {
+        var i, len, ref, results;
+        ref = this.querySelectorAll('grapp-graph-epoch-series');
+        results = [];
+        for (i = 0, len = ref.length; i < len; i++) {
+          s = ref[i];
+          results.push(this.createData(s));
+        }
+        return results;
+      }).call(this);
+      return this.draw();
+    },
+    createData: function(series) {
+      return {
+        label: series.label,
+        values: series.data
+      };
+    },
+    axisChanged: function() {
+      if (this.graph) {
+        return this.graph.option('axis', this.axis);
+      }
+    },
+    draw: function() {
+      var options;
+      this.$.graph.innerHTML = '';
+      if (this.margins) {
+        console.log(convertStringToObject(this.margins));
+      }
+      options = {
+        el: this.$.graph,
+        data: this.data,
+        axes: this.axis,
+        width: this.width,
+        height: this.height,
+        ticks: this.ticks ? convertStringToObject(this.ticks) : void 0,
+        tickSize: this.tickSize,
+        tickOffset: this.tickOffset,
+        windowSize: this.windowSize,
+        historySize: this.historySize,
+        queueSize: this.queueSize,
+        margins: this.margins ? convertStringToObject(this.margins) : void 0,
+        domain: this.domain != null ? convertStringToArray(this.domain) : void 0,
+        range: this.range != null ? convertStringToArray(this.range) : void 0
+      };
+      this.graph = new Epoch._typeMap[this.type](options);
+      return this.graph.draw();
+    },
+    push: function() {
+      var args, d;
+      args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
+      if (typeof args[0] === 'number') {
+        return this.graph.push([
+          {
+            time: args[0],
+            y: args[1]
+          }
+        ]);
+      } else {
+        return this.graph.push((function() {
+          var i, len, results;
+          results = [];
+          for (i = 0, len = args.length; i < len; i++) {
+            d = args[i];
+            results.push({
+              time: d[0],
+              y: d[1]
+            });
+          }
+          return results;
+        })());
+      }
+    },
+    clear: function() {
+      var i, len, ref, series;
+      ref = this.data;
+      for (i = 0, len = ref.length; i < len; i++) {
+        series = ref[i];
+        series.values = [
+          {
+            time: 0,
+            y: 0
+          }
+        ];
+      }
+      return this.draw();
+    }
+  });
+
+}).call(this);
+</script>
+
+</polymer-element>

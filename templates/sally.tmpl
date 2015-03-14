@@ -1,0 +1,159 @@
+<!doctype html>
+<html>
+
+<head>
+
+  <title>unquote</title>
+
+  <meta name="viewport" 
+  content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
+  <script src="static/bower_components/webcomponentsjs/webcomponents.js"> </script>
+
+  <link rel="import" href="static/bower_components/font-roboto/roboto.html">
+  <link rel="import" href="static/bower_components/core-header-panel/core-header-panel.html">
+  <link rel="import" href="static/bower_components/core-toolbar/core-toolbar.html">
+  <link rel="import" href="static/bower_components/paper-tabs/paper-tabs.html">
+
+  <link rel="import" href="static/bower_components/sortable-table/sortable-table.html">
+  <link rel="stylesheet" href="static/bower_components/sortable-table/css/bootstrap.css" shim-shadowdom>
+
+  <link rel="import" href="static/bower_components/google-youtube/google-youtube.html">
+
+  <link rel="import" href="static/bower_components/core-ajax/core-ajax.html">
+
+  <style>
+  html,body {
+    height: 100%;
+    margin: 0;
+    background-color: #E5E5E5;
+    font-family: 'RobotoDraft', sans-serif;
+  }
+  core-header-panel {
+    height: 100%;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch; 
+  }
+  core-toolbar {
+    background: #03a9f4;
+    color: white;
+  }
+  #tabs {
+    width: 100%;
+    margin: 0;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    text-transform: uppercase;
+  }
+  .container {
+    width: 80%;
+    margin: 50px auto;
+  }
+  @media (min-width: 481px) {
+    #tabs {
+      width: 200px;
+    }
+    .container {
+      width: 400px;
+    }
+  }
+  </style>
+
+</head>
+
+<body unresolved>
+  <core-header-panel>
+
+    <core-toolbar>
+
+      <paper-tabs id="tabs" selected="all" self-end>
+        <paper-tab name="all">All</paper-tab>
+        <paper-tab name="favorites">Favorites</paper-tab>
+      </paper-tabs>
+
+    </core-toolbar>
+
+    <!-- main page content will go here -->
+<sortable-table>
+    <sortable-column>fruit</sortable-column>
+    <sortable-column>alice</sortable-column>
+    <sortable-column>bill</sortable-column>
+    <sortable-column>casey</sortable-column>
+    <!-- data case be either an Array, JSON, or JSON5 -->
+    [
+        [ "{[ .foo ]}", 4, 10, 2 ],
+        [ "banana", 0, 4, 0 ],
+        [ "grape", 2, 3, 5 ],
+        [ "pear", 4, 2, 8 ],
+        [ "strawberry", 0, 14, 0 ]
+    ]
+</sortable-table>
+<span>
+<p>
+<center><google-youtube id="googleYouTube" playsupported="{{playSupported}}" videoid="mN7IAaRdi_k" state="{{state}}" currenttime="{{currentTime}}" currenttimeformatted="{{currentTimeFormatted}}" duration="{{duration}}" durationformatted="{{durationFormatted}}" fractionloaded="{{fractionLoaded}}">
+    
+
+    <div id="container" _style="width: {{width}}; height: {{height}}" style="width: 480px; height: 270px">
+      <template if="{{thumbnail}}"></template>
+
+      <template if="{{!thumbnail}}"></template>
+        <google-youtube-api on-api-load="{{ apiLoad }}"></google-youtube-api>
+      
+
+      <!-- Use this._playsupportedLocalStorage as the value, since this.playsupported is set to
+           true as soon as initial playback has started, and we don't want that cached. -->
+      <core-localstorage name="google-youtube-playsupported" value="{{_playsupportedLocalStorage}}" on-core-localstorage-load="{{ _determinePlaySupported }}" hidden="">
+      </core-localstorage>
+
+      <iframe id="player" frameborder="0" allowfullscreen="1" title="YouTube video player" width="100%" height="100%" src="https://www.youtube.com/embed/mN7IAaRdi_k?playsinline=1&amp;controls=2&amp;autohide=1&amp;autoplay=0&amp;id=googleYouTube&amp;playsupported=%7B%7BplaySupported%7D%7D&amp;videoid=mN7IAaRdi_k&amp;state=%7B%7Bstate%7D%7D&amp;currenttime=%7B%7BcurrentTime%7D%7D&amp;currenttimeformatted=%7B%7BcurrentTimeFormatted%7D%7D&amp;duration=%7B%7Bduration%7D%7D&amp;durationformatted=%7B%7BdurationFormatted%7D%7D&amp;fractionloaded=%7B%7BfractionLoaded%7D%7D&amp;enablejsapi=1&amp;origin=http%3A%2F%2Fgooglewebcomponents.github.io"></iframe>
+    </div>
+</google-youtube>
+</center>
+
+    <core-ajax url="/static/rob.json"
+               handleAs="json">
+    </core-ajax>
+
+    <script>
+      // Wait for 'polymer-ready'. Ensures the element is upgraded.
+      window.addEventListener('polymer-ready', function(e) {
+        var ajax = document.querySelector('core-ajax');
+
+        // Respond to events it fires.
+        ajax.addEventListener('core-response', function(e) {
+          console.log(this.response);
+
+        ajax.go(); // Call its API methods.
+      });
+    </script>
+
+
+
+  <script>
+    var t = document.querySelector('template');
+    t.domReady = function() {
+      setInterval(t.updateTimeSeries, 2000);
+    }
+    t.updateTimeSeries = function() {
+      if (t.$) {
+        t.$.timegraph.push((new Date()).getTime()/1000, Math.random()*100);
+      }
+    };
+    t.clear = function() {
+      t.$.timegraph.clear();
+    };
+  </script>
+
+  </core-header-panel>
+  
+  <script>
+    var tabs = document.querySelector('paper-tabs');
+    tabs.addEventListener('core-select', function() {
+      console.log("Selected: " + tabs.selected);
+    });
+  </script>
+</body>
+
+</html>

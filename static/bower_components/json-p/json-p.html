@@ -1,0 +1,47 @@
+<link rel="import" href"../polymer/polymer.html">
+
+<polymer-element name="json-p" attributes="url response auto">
+
+    <script>
+        Polymer('json-p', {
+            verbose:    false,
+            url:        "",
+            response:   null,
+            auto:       false,
+
+            //Functions
+            ready: function() {
+                if (this.verbose) console.log("json-p: Ready");
+                window.callbackJsonP = window.callbackJsonP || {};
+                window.callbackJsonP.counter = window.callbackJsonP.counter || 0;
+                if (this.auto) this.go();
+            },
+            go: function () {
+                if (this.verbose) console.log("json-p: Going");
+                window.callbackJsonP.counter++;
+                
+                var key         = "key" + Date.now().toString() + Math.round(Math.random() * 1000000000000000000).toString() + window.callbackJsonP.counter.toString(),
+                    script      = document.createElement("script"),
+                    element     = this;
+                
+                window.callbackJsonP[key] = function () {
+                    if (this.verbose) console.log("json-p: Reached callback");
+                    element.response = this[key].arguments[0];
+                    element.fire("jsonp-complete", key);
+                    delete window.callbackJsonP[key];
+                    document.getElementById(key).remove();
+                }
+                
+                script.id = key;
+                script.src = this.url + "&callback=callbackJsonP." + key;
+                document.getElementsByTagName("head")[0].appendChild(script);
+            },
+
+            urlChanged: function(attr, oldVal, newVal) {
+                if (this.verbose) console.log("json-p: URL Changed", newVal)
+                if (this.auto) this.go();
+            }
+        });
+    </script>
+
+</polymer-element>

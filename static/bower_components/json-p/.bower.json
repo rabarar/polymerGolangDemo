@@ -1,0 +1,31 @@
+{
+  "name": "json-p",
+  "description": "An element to make JSONP requests.",
+  "license": "MIT",
+  "main": "json-p.html",
+  "keywords": [
+    "polymer",
+    "web-components",
+    "json",
+    "jsonp",
+    "ajax"
+  ],
+  "ignore": [
+    "**/.*",
+    "bower_components"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^0.5.1"
+  },
+  "homepage": "https://github.com/IAmThePan/json-p",
+  "_release": "8db42f77b5",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "8db42f77b53b76156e583d68e447833f1e7a4aa9"
+  },
+  "_source": "git://github.com/IAmThePan/json-p.git",
+  "_target": "*",
+  "_originalSource": "json-p",
+  "_direct": true
+}
