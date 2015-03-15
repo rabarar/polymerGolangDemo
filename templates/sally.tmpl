@@ -112,6 +112,29 @@
 </google-youtube>
 </center>
 
+  <core-ajax auto url="//gdata.youtube.com/feeds/api/videos/" 
+      params='{"alt":"json", "q":"chrome"}'
+      handleAs="json"></core-ajax>
+   
+  <template repeat="{{response.feed.entry}}">
+    <p1> yo!
+    <div>{{title.$t}}</div>
+  </template>
+  
+  <script>
+    document.addEventListener('polymer-ready', function() {
+      var ajax = document.querySelector("core-ajax");
+      ajax.addEventListener("core-response", 
+        function(e) {
+          document.querySelector('template').model = {
+            response: e.detail.response
+          };
+        }
+      );
+    });
+  </script>
+
+
     <core-ajax url="/static/rob.json"
                handleAs="json">
     </core-ajax>

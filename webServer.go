@@ -15,6 +15,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+const ()
+
 type DemoPages struct {
 	pages map[string]DemoPage
 }
@@ -24,6 +26,10 @@ type DemoPage struct {
 	callback  gin.HandlerFunc
 	template  string
 	context   interface{}
+}
+
+type Movies struct {
+	Title string `json:"title"`
 }
 
 var (
@@ -43,6 +49,7 @@ func main() {
 		"fred":  DemoPage{"/fred", FredFunc, "fred.tmpl", foo},
 		"tom":   DemoPage{"/tom", TomFunc, "tom.tmpl", grill},
 		"sally": DemoPage{"/sally", SallyFunc, "sally.tmpl", bar},
+		"core":  DemoPage{"/feeds/api/rob", coreFunc, "core.tmpl", nil},
 	}
 
 	// Use Gin-Gonic for our web framework
@@ -129,6 +136,20 @@ func SallyFunc(c *gin.Context) {
 		}
 		c.HTML(http.StatusOK, "sally.tmpl", obj)
 	}
+
+}
+
+// GET callbacks; core
+func coreFunc(c *gin.Context) {
+
+	// dp, err := GetDPContext(c)
+	var core []Movies = []Movies{
+		Movies{"yo bro"},
+		Movies{"sambo"},
+		Movies{"huh"},
+	}
+
+	c.JSON(http.StatusOK, core)
 
 }
 
