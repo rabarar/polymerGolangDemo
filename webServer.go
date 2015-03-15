@@ -143,6 +143,11 @@ func SallyFunc(c *gin.Context) {
 func coreFunc(c *gin.Context) {
 
 	// dp, err := GetDPContext(c)
+	p1 := c.Request.URL.Query().Get("alt")
+	p2 := c.Request.URL.Query().Get("q")
+
+	fmt.Printf("P1 = [%s] P2 = [%s]\n", p1, p2)
+
 	var core []Movies = []Movies{
 		Movies{"yo bro"},
 		Movies{"sambo"},
