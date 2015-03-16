@@ -3,7 +3,8 @@ A quick and dirty demo showing how to use Golang and Polymer together - with tem
 
 This is a quick demo to show how to use Golang and Polymer together. There are two basic models:
 
-1. Use Golang solely as a RESTful source to interact with polymer through core-ajax
+1. Use Golang solely as a RESTful source to interact with polymer through core-ajax (see http://localhost:8080/feeds/api/rob2)
+
 2. Use Golang templates + Polymer to interact with componts in DOM.
 
 DISCLAMER!
