@@ -2,7 +2,7 @@
 <html>
 <head>
 
-  <title>core-ajax</title>
+  <title>Rob's core-ajax Demo</title>
 
   <script src="/static/bower_components/webcomponentsjs/webcomponents.js"></script>
   <link rel="import" href="/static/bower_components/core-ajax/core-ajax.html">
@@ -10,26 +10,46 @@
 </head>
 <body>
 
-  <core-ajax auto url="//localhost:8080/feeds/api/rob/" 
-      params='{"alt":"json", "q":"chrome"}'
-      handleAs="json"></core-ajax>
-   
-  <template repeat="{{response.feed.entry}}">
-    <div>** {{title.$t}} **</div>
-  </template>
-  
-  <script>
-    document.addEventListener('polymer-ready', function() {
-      var ajax = document.querySelector("core-ajax");
-      ajax.addEventListener("core-response", 
-        function(e) {
-          document.querySelector('template').model = {
-            response: e.detail.response
-          };
-        }
-      );
-    });
-  </script>
+<core-ajax auto url="//localhost:8080/feeds/api/rob/" 
+	params='{"alt":"json", "q":"chrome"}'
+	handleAs="json" id="movieDataSource">
+</core-ajax>
 
+<template id="movie-table-template" bind="{{movieArray}}">
+    <table border="1">
+        <thead>
+        <tr>
+            <th>NAME</th>
+            <th>REVIEW</th>
+            <th>STARS</th>
+            <th>LINK</th>
+        </tr>
+        </thead>
+        <tbody>
+            <template repeat="{{data}}">
+                <tr >
+                    <td>{{name}}</td>
+                    <td>{{review}}</td>
+                    <td>{{stars}}</td>
+                    <td>{{link}}</td>
+                </tr>
+            </template>
+        </tbody>
+    </table>
+</template>
+<script>
+    var APP ={
+        /*AJAX Success Callback Method*/
+        ajaxCallbackHandler : function(e) {
+            document.querySelector('#movie-table-template').model = {
+                movieArray: e.detail.response
+            };
+        }
+    }
+    document.addEventListener('polymer-ready', function() {
+        var ajax = document.querySelector("#movieDataSource");
+        ajax.addEventListener("core-response",APP.ajaxCallbackHandler);
+    });
+</script>
 </body>
 </html>

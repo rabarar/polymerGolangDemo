@@ -29,7 +29,10 @@ type DemoPage struct {
 }
 
 type Movies struct {
-	Title string `json:"title"`
+	Name   string `json:"name"`
+	Review string `json:"review"`
+	Stars  string `json:"stars"`
+	Link   string `json:"link"`
 }
 
 var (
@@ -49,7 +52,8 @@ func main() {
 		"fred":  DemoPage{"/fred", FredFunc, "fred.tmpl", foo},
 		"tom":   DemoPage{"/tom", TomFunc, "tom.tmpl", grill},
 		"sally": DemoPage{"/sally", SallyFunc, "sally.tmpl", bar},
-		"core":  DemoPage{"/feeds/api/rob", coreFunc, "core.tmpl", nil},
+		"core":  DemoPage{"/feeds/api/rob", coreFunc, "", nil},
+		"core2": DemoPage{"/feeds/api/rob2", coreFunc2, "core.tmpl", nil},
 	}
 
 	// Use Gin-Gonic for our web framework
@@ -149,12 +153,24 @@ func coreFunc(c *gin.Context) {
 	fmt.Printf("P1 = [%s] P2 = [%s]\n", p1, p2)
 
 	var core []Movies = []Movies{
-		Movies{"yo bro"},
-		Movies{"sambo"},
-		Movies{"huh"},
+		Movies{"Throw Mama From the Train", "Sucked", "**", "http://www.nogo.com"},
+		Movies{"Die Hard", "Sucked Less", "***", "http://www.go.com"},
 	}
 
 	c.JSON(http.StatusOK, core)
+
+}
+
+// GET callbacks; core
+func coreFunc2(c *gin.Context) {
+
+	// dp, err := GetDPContext(c)
+	p1 := c.Request.URL.Query().Get("alt")
+	p2 := c.Request.URL.Query().Get("q")
+
+	fmt.Printf("P1 = [%s] P2 = [%s]\n", p1, p2)
+
+	c.HTML(http.StatusOK, "core.tmpl", nil)
 
 }
 
@@ -186,8 +202,10 @@ func buildTmpArray(tdir string, p map[string]DemoPage) []string {
 	var temps []string = []string{}
 
 	for _, page := range p {
-		pe := fmt.Sprintf("%s/%s", tdir, page.template)
-		temps = append(temps, pe)
+		if page.template != "" {
+			pe := fmt.Sprintf("%s/%s", tdir, page.template)
+			temps = append(temps, pe)
+		}
 	}
 
 	return temps
